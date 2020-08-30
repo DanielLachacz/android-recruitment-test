@@ -1,10 +1,14 @@
-package dog.snow.androidrecruittest.repository.model
+package dog.snow.androidrecruittest.data.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+@Entity(tableName = "photos")
 data class RawPhoto(
+    @PrimaryKey
     val id: Int,
     val albumId: Int,
     val title: String,
