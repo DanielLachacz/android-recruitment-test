@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import dog.snow.androidrecruittest.ui.listFragment.IOnBackPressed
 import dog.snow.androidrecruittest.utils.NetworkConnection
 import kotlinx.android.synthetic.main.layout_banner.*
 
@@ -39,5 +40,12 @@ class MainActivity : AppCompatActivity(){
 
             }
         })
+    }
+
+    override fun onBackPressed() {
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.containerView)
+        (fragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
+            super.onBackPressed()
+        }
     }
 }

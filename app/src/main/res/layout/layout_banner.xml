@@ -7,4 +7,5 @@
     android:layout_height="wrap_content"
     android:text="@string/offline_mode"
     android:visibility="gone"
-    tools:visibility="visible" />
+    tools:visibility="visible"
+    android:background="@color/light_accent_color" />

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@android:color/white"
+    android:id="@+id/list_fragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_items"
@@ -23,9 +25,12 @@
         tools:listitem="@layout/list_item"
         tools:visibility="visible" />
 
-    <include layout="@layout/layout_search" />
+    <include layout="@layout/layout_search"
+        android:visibility="visible"/>
 
     <include
+        android:id="@+id/empty_list"
+        android:visibility="visible"
         layout="@layout/layout_empty_view"
         tools:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

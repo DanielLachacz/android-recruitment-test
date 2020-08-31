@@ -9,4 +9,10 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(private val photoRepository: PhotoRepository,
 private val albumRepository: AlbumRepository,
 private val userRepository: UserRepository): ViewModel() {
+
+    fun getPhotosCache() = photoRepository.getPhotosCache()
+
+    fun getAlbumsCache() = albumRepository.getAlbumsCache()
+
+    fun getUsersCache() = userRepository.getUsersCache()
 }

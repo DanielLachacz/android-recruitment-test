@@ -3,47 +3,72 @@ package dog.snow.androidrecruittest.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import dog.snow.androidrecruittest.R
 import dog.snow.androidrecruittest.ui.model.ListItem
+import kotlinx.android.synthetic.main.list_item.view.*
 
-class ListAdapter(private val onClick: (item: ListItem, position: Int, view: View) -> Unit) :
-    androidx.recyclerview.widget.ListAdapter<ListItem, ListAdapter.ViewHolder>(DIFF_CALLBACK) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return ViewHolder(itemView, onClick)
+class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var items: List<ListItem> = ArrayList()
+    private var filteredList: List<ListItem> = ArrayList()
+    var onItemClick: ((ListItem) -> Unit)? = null
+
+    init {
+        filteredList = items
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(getItem(position))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ItemViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        )
+    }
 
-    class ViewHolder(
-        itemView: View,
-        private val onClick: (item: ListItem, position: Int, view: View) -> Unit
-    ) :
-        RecyclerView.ViewHolder(itemView) {
-        fun bind(item: ListItem) = with(itemView) {
-            val ivThumb: ImageView = findViewById(R.id.iv_thumb)
-            val tvTitle: TextView = findViewById(R.id.tv_photo_title)
-            val tvAlbumTitle: TextView = findViewById(R.id.tv_album_title)
-            tvTitle.text = item.title
-            tvAlbumTitle.text = item.albumTitle
-            //TODO: display item.thumbnailUrl in ivThumb
-            setOnClickListener { onClick(item, adapterPosition, this) }
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
+    fun filterList(filteredList: ArrayList<ListItem>) {
+        items = filteredList
+        notifyDataSetChanged()
+    }
+
+    fun submitList(listItem: List<ListItem>) {
+        items = listItem
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder) {
+            is ItemViewHolder -> {
+                holder.bind(items[position])
+            }
         }
     }
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListItem>() {
-            override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean =
-                oldItem.id == newItem.id
+    inner class ItemViewHolder
+    constructor(
+        itemView: View
+    ): RecyclerView.ViewHolder(itemView) {
 
-            override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem): Boolean =
-                oldItem == newItem
+        private val ivThumb = itemView.iv_thumb
+        private val tvTitle = itemView.tv_photo_title
+        private val tvAlbumTitle = itemView.tv_album_title
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(items[adapterPosition])
+            }
+        }
+
+        fun bind(listItem: ListItem) {
+
+            Picasso.get()
+                .load(listItem.thumbnailUrl)
+                .into(ivThumb)
+
+            tvTitle.text = listItem.title
+            tvAlbumTitle.text = listItem.albumTitle
         }
     }
 }
