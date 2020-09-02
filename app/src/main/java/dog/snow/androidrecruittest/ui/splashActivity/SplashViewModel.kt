@@ -36,7 +36,7 @@ private val userRepository: UserRepository,
         fetchData()
     }
 
-    private fun fetchData() {
+     fun fetchData() {
         loading.postValue(true)
 
         requests.add(photoRepository.getPhotos()

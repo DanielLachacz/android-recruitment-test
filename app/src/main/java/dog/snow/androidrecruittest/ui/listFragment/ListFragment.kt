@@ -53,7 +53,6 @@ class ListFragment : DaggerFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
 
         mainActivity = this.activity as MainActivity
-        mainActivity.onBackPressed().equals(true)     // Do poprawy
 
         return inflater.inflate(R.layout.list_fragment, container, false)
     }
@@ -62,7 +61,6 @@ class ListFragment : DaggerFragment() {
         super.onActivityCreated(savedInstanceState)
         getData()
         setUpBar()
-        //disableBackButton()
 
         view?.et_search?.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -108,12 +106,13 @@ class ListFragment : DaggerFragment() {
     private fun onDetailsFragment(detail: Detail) {
         val bundle = Bundle()
         bundle.putParcelable("detail", detail)
-        val detailsFragment =
-            DetailsFragment()
-        detailsFragment.arguments = bundle
-        mainActivity.supportFragmentManager.beginTransaction()
-            .replace(R.id.list_fragment, detailsFragment)
-            .addToBackStack("tag")
+       // val detailsFragment =
+        //    DetailsFragment()
+        //detailsFragment.arguments = bundle
+        //mainActivity.supportFragmentManager.beginTransaction()
+             mainActivity?.supportFragmentManager?.beginTransaction()
+            .replace(R.id.containerView, DetailsFragment::class.java, bundle)
+            .addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
     }
@@ -189,8 +188,4 @@ class ListFragment : DaggerFragment() {
         mainActivity.title = "  Android Recruit Test"
     }
 
-}
-
-interface IOnBackPressed {
-    fun onBackPressed(): Boolean
 }

@@ -41,7 +41,6 @@ class SplashActivity : DaggerAppCompatActivity() {
         viewModel.loading.observe(this, Observer {
             Timber.e("Loading: $it")
             if (it == true) {
-                progressbar.show()
                 progressbar.visibility = View.VISIBLE
             }
             else if (it == false) {
@@ -66,5 +65,6 @@ class SplashActivity : DaggerAppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java).apply {
         }
         startActivity(intent)
+        finish()
     }
 }
